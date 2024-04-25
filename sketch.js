@@ -15,7 +15,7 @@ let dialogueBox;
 function preload() {
   title = loadImage('titleScreen.png');
   roomEntranceScene = loadImage('floofieRoomEntrance.png');
-  bedroomScene = loadImage('bedroom_furniture/floofieBedroomBG.PNG');
+  bedroomScene = loadImage('bedroom_furniture/floofieBedroom.png');
   font = loadFont('Minecraft.ttf');
 }
 
