@@ -1,0 +1,27 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+.startButton {
+  background-image:url('startButton.png');
+  border:none;
+  color:transparent;
+  width:157px;
+  height:32px;
+}
+.dialogueBox {
+  background-color:oldlace;
+  background-size:contain;
+  border:none;
+  border-radius:25px;
+  color:deeppink;
+  border:none;
+  width:175px;
+  height:60px;
+  font-size:medium;
+  overflow:hidden; 
+  box-sizing:border-box;      
+}
