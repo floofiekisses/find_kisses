@@ -2,12 +2,13 @@ let kisses;
 //create kisses sprite
 let currentDialogue;
 let currentExpression;
+let invisibleExpression;
 let currentDialogueIndex = 0; // keeps track of which dialogue we're at
 let maxDialogue; // max dialogue amount
 let currentSprite;
 let displayTextBox = false;
 let startButton; // start button variable
-
+let font;
 let floofie = {};
 let player = {};
 
@@ -38,15 +39,15 @@ let table;
 
 function preload() {
 for (let i = 0; i < expressions.length; i++) {
-  floofie[`${expressions[i]}`] = loadImage(`characters/floofie/expressions/${expressions[i]}.png`)
+  floofie[`${expressions[i]}`] = loadImage(`characters/floofie/expressions/${expressions[i]}.png`);
 }
-
   title = loadImage('titleScreen.png');
   roomEntranceScene = loadImage('floofieRoomEntrance.png');
   bedroomScene = loadImage('bedroom_furniture/floofieBedroomBG.png');
   font = loadFont('Minecraft.ttf');
   titleScreenTheme = loadSound('floofieTitleTheme.mp3');
   floofieTalkingSound = loadSound("floofieTalking.mp3");
+  invisibleExpression = loadImage("characters/player/invisibleExpression.png");
 }
 
 function setup() {
@@ -57,7 +58,7 @@ function setup() {
   startButton.position(125, 208); // sets button position
   startButton.mousePressed(entranceScene); // press mouse button to change scene
   titleScreenTheme.play();
-  titleScreenTheme.setVolume(0.25);
+  titleScreenTheme.setVolume(0.35);
 
 }
 
@@ -67,12 +68,20 @@ function dialogue(sprite) {
   // how long the interaction is
   currentDialogue = sprite.dialogue[currentDialogueIndex];
   //start @ 0
-  let currentCharacter = characters[sprite.character];
+  let currentCharacter = characters[sprite.characters];
   //the character currently displayed
-  currentExpression = currentCharacter[sprite.expression[currentDialogueIndex]];
+  if (currentCharacter != "player") {
+    currentExpression = currentCharacter[sprite.expression[currentDialogueIndex]];
+    floofieTalkingSound.play();
+    floofieTalkingSound.setVolume(0.2);
+  } else {
+    // if it's the player, set their expression to an invisible placeholder image.
+    currentExpression = invisibleExpression;
+  }
   // this is the character's current expression according to the dialogue line current being displayed
   displayTextBox = true;
 }
+
 
 function keyPressed() {
   if (keyCode === RETURN && displayTextBox == true) {
@@ -86,7 +95,6 @@ function keyPressed() {
     console.log(currentDialogueIndex);
 
     dialogue(currentSprite);
-    floofieTalkingSound.play();
   }
 }
 
@@ -94,7 +102,6 @@ function keyPressed() {
 function entranceScene() {
   background(roomEntranceScene)
   if (startButton.mousePressed) {
-    titleScreenTheme.stop();
     startButton.hide();
     currentDialogueIndex = 0;
     displayTextBox = true;
@@ -104,6 +111,7 @@ function entranceScene() {
 }
 
 // function bedroomScene() {
+// if (currentDialogueIndex === 0 && background.mousePressed == true) {
 //   background(bedroomScene);
 //   kisses = new Sprite(random(0, 400), random(0,240));
 //   kisses.img = 'kissesSprite.png';
@@ -120,19 +128,25 @@ function entranceScene() {
 //   sofaKissesBed.img = 'bedroom_furniture/sofaKissesBed.png';
 //   table = newSprite();
 //   table.img = 'bedroom_furniture/table.png';
+//   }
 // }
 
 
-// // function kissesFound() {
-// // if (kisses.mousePressed = true) {
-// //   }
-// // }
+// function kissesFound() {
+// if (kisses.mousePressed = true) {
+//   }
+// }
 
 function draw() {
   // draw the textbox
   // draw the text
   if(displayTextBox) {
-      text(currentDialogue, 85, 85, width - 90, 100);
+    rectMode(CENTER);
+    rect(225, 200, 275, 70, 35);
+    textFont(font);
+      textAlign(CENTER);
+      textSize(11);
+      text(currentDialogue, 225, 250, width - 90, 100);
     // show the current dialogue
     image(currentExpression, 5, height - 80);
       // draw the expression
